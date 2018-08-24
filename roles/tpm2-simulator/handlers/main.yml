@@ -1,0 +1,6 @@
+---
+# handlers file for tpm2-simulator
+#- name: restart apache
+#  command: service https restart
+#  args:
+#    warn: no

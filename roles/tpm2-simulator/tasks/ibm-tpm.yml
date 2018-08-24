@@ -1,0 +1,16 @@
+- name: Create ibmtpm directory
+  become: yes
+  file: path=/root/ibmtpm974 state=directory
+
+- name: Download  and extract ibmtpm
+  become: yes
+  unarchive:
+    src: https://downloads.sourceforge.net/project/ibmswtpm2/ibmtpm974.tar.gz
+    dest: /root/ibmtpm974
+    remote_src: yes
+
+- name: Build ibmtpm
+  become: yes
+  make:
+    chdir: /root/ibmtpm974/src
+

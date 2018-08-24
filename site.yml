@@ -1,0 +1,5 @@
+---
+- hosts: all
+  sudo: yes
+  roles:
+    - { role: "tpm2-simulator", tpm2-simulator_version: "0.0.1" }
