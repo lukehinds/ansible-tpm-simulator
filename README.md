@@ -60,11 +60,32 @@ List Current PCR Values
 
     tpm2_pcrlist
 
+Error Codes
+-----------
+
+Error codes can be viewed with `tpm2_rc_decode`, for example:
+
+```
+$ tpm2_rc_decode 0x921
+error layer
+  hex: 0x0
+  identifier: TSS2_TPM_ERROR_LEVEL
+  description: Error produced by the TPM
+format 0 warning code
+  hex: 0x21
+  name: TPM_RC_LOCKOUT
+  description: authorizations for objects subject to DA protection are not allowed at this time because the TPM is in DA lockout mode
+```
 
 License
 -------
 
 Apache 2.0
+
+Contribute
+----------
+
+Please do! Pull requests are welcome as I have not done a great deal here yet!
 
 Author Information
 ------------------
