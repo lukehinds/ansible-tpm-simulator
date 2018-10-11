@@ -8,6 +8,8 @@ The idea is that this will allow developers to quickly bring up a virtual
 environment to learn the TPM2 tool set and start to develop their own TPM
 applications.
 
+Vagrant file currently only works with libvirt as a provider
+
 Tools Included
 --------------
 
@@ -19,6 +21,12 @@ Other supporting software
 
 * tboot
 * openssl-devel
+
+rng-tools randomness
+--------------------
+
+When using the Vagrantfile a virtio feed is made from the hosts
+/dev/urandom to help with entropy.
 
 Usage
 =====
