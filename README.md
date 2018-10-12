@@ -48,6 +48,24 @@ You can now start the resource manager daemon as follows:
     [root@tpm2-simulator src]# tpm2-abrmd -t socket
     Client accepted
 
+If you prefer to use systemd to manage the resource manager , just amend
+the file `/usr/lib/systemd/system/tpm2-abrmd.service` as follows::
+
+``[Service]
+Type=dbus
+Restart=always
+RestartSec=5
+EnvironmentFile=-/etc/default/tpm2-abrmd
+BusName=com.intel.tss2.Tabrmd
+StandardOutput=syslog
+ExecStart=/usr/sbin/tpm2-abrmd -t socket
+User=tss
+
+[Install]
+WantedBy=multi-user.target``
+
+Namely add `-t socker` to the `ExecStart` line.
+
 Basic Commands
 ==============
 
