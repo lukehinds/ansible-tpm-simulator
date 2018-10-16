@@ -8,7 +8,7 @@ The idea is that this will allow developers to quickly bring up a virtual
 environment to learn the TPM2 tool set and start to develop their own TPM
 applications.
 
-Vagrant file currently only works with libvirt as a provider
+Vagrant file currently works with libvirt and VirtualBox as providers.
 
 Tools Included
 --------------
@@ -25,13 +25,21 @@ Other supporting software
 rng-tools randomness
 --------------------
 
-When using the Vagrantfile a virtio feed is made from the hosts
-/dev/urandom to help with entropy.
+When using `libvirt` as a provider, a virtio feed is made from the hosts
+/dev/urandom to the guest, in order to help with entropy needs.
 
 Usage
 =====
 
-Clone the repository and then simply run `vargant up`.
+Clone the repository and then simply run `vargant up --provider <provider>`.
+
+For example, using libvirt:
+
+`vagrant up --provider libvirt`
+
+For example, using VirtualBox:
+
+`vagrant up --provider virtualbox`
 
 Once the VM is started, `vagrant ssh` into the VM and run `sudo su -` to become
 root.
