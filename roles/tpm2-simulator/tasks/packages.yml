@@ -10,23 +10,23 @@
     name: openssl-devel
     state: latest
 
-- name: install tpm2-tools
-  become: yes
-  package:
-    name: tpm2-tools
-    state: latest
+#- name: install tpm2-tools
+  #become: yes
+  #package:
+    #name: tpm2-tools
+    #state: latest
 
-- name: install tpm2-abrmd
-  become: yes
-  package:
-    name: tpm2-abrmd
-    state: latest
+#- name: install tpm2-abrmd
+  #become: yes
+  #package:
+    #name: tpm2-abrmd
+    #state: latest
 
-- name: install tpm2-tss
-  become: yes
-  package:
-    name: tpm2-tss
-    state: latest
+#- name: install tpm2-tss
+  #become: yes
+  #package:
+    #name: tpm2-tss
+    #state: latest
 
 - name: install tboot
   become: yes

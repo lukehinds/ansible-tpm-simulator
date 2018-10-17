@@ -1,3 +1,5 @@
 ---
-# vars file for openstack-security-hardening
-jre_url: http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jre-8u181-windows-x64.tar.gz
+# vars file for build versions
+tpm2_tss_version: master
+tpm2-abrmd_version: master
+tpm2-tools_version: master

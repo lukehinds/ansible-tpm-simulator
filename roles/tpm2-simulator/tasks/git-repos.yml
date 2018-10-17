@@ -1,0 +1,20 @@
+- name: Clone tpm2-tss
+  become: yes
+  git:
+    repo: https://github.com/tpm2-software/tpm2-tss
+    dest: /root/tpm2-tss
+    version: {{ tpm2_tss_version }}
+
+- name: Clone tpm2-abrmd
+  become: yes
+  git:
+    repo: https://github.com/tpm2-software/tpm2-abrmd
+    dest: /root/tpm2-abrmd
+    version: {{ tpm2_abrmd_version }}
+
+- name: Clone tpm2-tools
+  become: yes
+  git:
+    repo: https://github.com/tpm2-software/tpm2-tools
+    dest: /root/tpm2-tools
+    version: {{ tpm2_tools_version }}
