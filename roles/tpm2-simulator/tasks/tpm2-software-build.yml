@@ -1,3 +1,19 @@
+- name: Set LD_LIBRARY_PATH environment
+  become: yes
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    regexp: '^LD_LIBRARY_PATH'
+    line: 'LD_LIBRARY_PATH=/usr/lib'
+
+- name: Add the user 'tss'
+  become: yes
+  user:
+    name: tss
+    comment: TPM2 TSS User
+    group: tss
+    shell: /bin/bash
+
 - name: SELinux to permissive
   become: yes
   selinux:
@@ -87,10 +103,26 @@
   args:
     chdir: "/root/tpm2-tools/"
 
-- name: Set LD_LIBRARY_PATH environment
+- name: Add lib to ld.so.conf
+  become: yes
+  lineinfile: dest=/etc/ld.so.conf line="/usr/lib/"
+
+- name: Run ldconfig
+  become: yes
+  command: /sbin/ldconfig
+
+- name: Amend systemd for tpm2-abrmd ExecStart
   become: yes
   lineinfile:
-    dest: /etc/environment
+    dest: /usr/lib/systemd/system/tpm2-abrmd.service
     state: present
-    regexp: '^LD_LIBRARY_PATH'
-    line: 'LD_LIBRARY_PATH=/usr/lib'
+    regexp: '^ExecStart'
+    line: 'ExecStart=/usr/sbin/tpm2-abrmd --tcti=libtss2-tcti-mssim.so'
+
+- name: Amend systemd for tpm2-abrmd Environment
+  become: yes
+  lineinfile:
+    dest: /usr/lib/systemd/system/tpm2-abrmd.service
+    state: present
+    regexp: '^EnvironmentFile'
+    line: 'EnvironmentFile=/etc/environment'

@@ -46,37 +46,22 @@ root.
 
 You can then start the TPM simulator as follows:
 
-    [root@tpm2-simulator ~]# ./tpm_server
+    [root@tpm2-simulator ~]# tpm_server
     TPM command server listening on port 2321
     Platform server listening on port 2322
 
-You can now start the resource manager daemon as follows:
+* Tip: use `tpm_server -c` to clear ownership.
 
-    [root@tpm2-simulator src]# tpm2-abrmd --tcti=libtss2-tcti-mssim.so --allow-root
-    Client accepted
+You can enable / start the resource manager as a systemd service as follows:
 
-If you prefer to use systemd to manage the resource manager , just amend
-the file `/usr/lib/systemd/system/tpm2-abrmd.service` as follows::
+    [root@tpm2-simulator src]# systemctl enable tpm2-abrmd
 
-    [Service]
-    Type=dbus
-    Restart=always
-    RestartSec=5
-    EnvironmentFile=-/etc/default/tpm2-abrmd
-    BusName=com.intel.tss2.Tabrmd
-    StandardOutput=syslog
-    ExecStart=/usr/sbin/tpm2-abrmd --tcti=libtss2-tcti-mssim.so --allow-root
-    User=tss
-
-    [Install]
-    WantedBy=multi-user.target
-
-Namely add `--tcti=libtss2-tcti-mssim.so --allow-root` to the `ExecStart` line.
+    [root@tpm2-simulator src]# systemctl start tpm2-abrmd
 
 TPM2 Software Branches
 ======================
 
-You can set branch names that will be used for building within the following
+You can set branch names that will be used for building using the following
 vars set within `roles/tpm2-simulator/vars/main.yml`
 
     tpm2_tss_version: 2.1.0
@@ -89,9 +74,9 @@ Configure Arguments
 Configure arguments can be set within `roles/tpm2-simulator/vars/main.yml`, for
 example:
 
-  tpm2_tss_configure_args: "./configure --prefix=/usr --enable-debug --with-crypto=ossl --disable-doxygen-doc"
-  tpm2_abrmd_configure_args: "TSS2_SYS_CFLAGS=' ' TSS2_SYS_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr --with-dbuspolicydir=/etc/dbus-1/system.d"
-  tpm2_tools_configure_args: "SAPI_CFLAGS=' ' SAPI_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr"
+    tpm2_tss_configure_args: "./configure --prefix=/usr --enable-debug --with-crypto=ossl --disable-doxygen-doc"
+    tpm2_abrmd_configure_args: "TSS2_SYS_CFLAGS=' ' TSS2_SYS_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr --with-dbuspolicydir=/etc/dbus-1/system.d"
+    tpm2_tools_configure_args: "SAPI_CFLAGS=' ' SAPI_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr"
 
 Basic Commands
 ==============
@@ -138,7 +123,7 @@ Apache 2.0
 Contribute
 ----------
 
-Please do! Pull requests are welcome as I have not done a great deal here yet!
+Please do! Pull requests are welcome.
 
 Author Information
 ------------------
