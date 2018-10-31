@@ -1,5 +1,10 @@
 ---
 # vars file for build versions
-tpm2_tss_version: master
-tpm2-abrmd_version: master
-tpm2-tools_version: master
+tpm2_tss_version: 2.1.0
+tpm2_abrmd_version: 2.0.2
+tpm2_tools_version: 3.1.3
+
+# vars file for configure arguments
+tpm2_tss_configure_args: "./configure --prefix=/usr --enable-debug --with-crypto=ossl --disable-doxygen-doc"
+tpm2_abrmd_configure_args: "TSS2_SYS_CFLAGS=' ' TSS2_SYS_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr --with-dbuspolicydir=/etc/dbus-1/system.d"
+tpm2_tools_configure_args: "SAPI_CFLAGS=' ' SAPI_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr"

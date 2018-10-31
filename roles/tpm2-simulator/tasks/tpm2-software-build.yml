@@ -1,29 +1,96 @@
-- name: Build tpm2-tss
+- name: SELinux to permissive
   become: yes
-  shell: 'chdir=/root/tpm2-tss "{{ item }}"'
-  with_items:
-    - make clean
-    - ./bootstrap
-    - ./configure --enable-unit --enable-integration
-    - make -j4 check
-    - make install
+  selinux:
+    policy: targeted
+    state: permissive
 
-- name: Build tpm2-abrmd
+# tpm2-tss
+- name: bootstrap tpm2-tss
   become: yes
-  shell: 'chdir=/root/tpm2-abrmd "{{ item }}"'
-  with_items:
-    - make clean
-    - ./bootstrap
-    - ./configure --enable-unit --with-dbuspolicydir=/etc/dbus-1/system.d
-    - make -j4 check
-    - make install
+  command: ./bootstrap
+  args:
+    chdir: "/root/tpm2-tss/"
 
-- name: Build tpm2-tools
+- name: configure tpm2-tss
   become: yes
-  shell: 'chdir=/root/tpm2-tools "{{ item }}"'
-  with_items:
-    - make clean
-    - ./bootstrap
-    - ./configure --enable-unit --enable-integration
-    - make -j4 check
-    - make install
+  shell: "{{tpm2_tss_configure_args }}"
+  args:
+    chdir: "/root/tpm2-tss/"
+  environment:
+    PATH: /root/ibmtpm974/src:{{ ansible_env.PATH }}
+
+- name: Make check tpm2-tss
+  become: yes
+  command: make
+  args:
+    chdir: "/root/tpm2-tss/"
+
+- name: Make install tpm2-tss
+  become: yes
+  command: make install
+  args:
+    chdir: "/root/tpm2-tss/"
+
+# tpm2-abrmd
+
+- name: bootstrap tpm2-abrmd
+  become: yes
+  command: ./bootstrap
+  args:
+    chdir: "/root/tpm2-abrmd/"
+
+- name: configure tpm2-abrmd
+  become: yes
+  shell: "{{tpm2_abrmd_configure_args }}"
+  args:
+    chdir: "/root/tpm2-abrmd/"
+  environment:
+    PATH: /root/ibmtpm974/src:{{ ansible_env.PATH }}
+
+- name: Make check tpm2-abrmd
+  become: yes
+  command: make
+  args:
+    chdir: "/root/tpm2-abrmd/"
+
+- name: Make install tpm2-tss
+  become: yes
+  command: make install
+  args:
+    chdir: "/root/tpm2-abrmd/"
+
+# tpm2-tools
+
+- name: bootstrap tpm2-tools
+  become: yes
+  command: ./bootstrap
+  args:
+    chdir: "/root/tpm2-tools/"
+
+- name: configure tpm2-tools
+  become: yes
+  shell: "{{ tpm2_tools_configure_args }}"
+  args:
+    chdir: "/root/tpm2-tools/"
+  environment:
+    PATH: /root/ibmtpm974/src:{{ ansible_env.PATH }}
+
+- name: Make check tpm2-tools
+  become: yes
+  command: make
+  args:
+    chdir: "/root/tpm2-tools/"
+
+- name: Make install tpm2-tools
+  become: yes
+  command: make install
+  args:
+    chdir: "/root/tpm2-tools/"
+
+- name: Set LD_LIBRARY_PATH environment
+  become: yes
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    regexp: '^LD_LIBRARY_PATH'
+    line: 'LD_LIBRARY_PATH=/usr/lib'

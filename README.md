@@ -1,8 +1,8 @@
 Ansible TPM Simulator
 =====================
 
-This ansible role deploys CentOS 7.5 and the TPM2 tools listed below, alongside
-IBM's Software TPM 2.0 developed by Ken Goldman.
+This ansible role deploys CentOS 7.5 and builds / installs TPM2 software listed
+below, alongside IBM's Software TPM 2.0 developed by Ken Goldman.
 
 The idea is that this will allow developers to quickly bring up a virtual
 environment to learn the TPM2 tool set and start to develop their own TPM
@@ -44,16 +44,15 @@ For example, using VirtualBox:
 Once the VM is started, `vagrant ssh` into the VM and run `sudo su -` to become
 root.
 
-From here navigate to `/root/ibmtpm974/src` and run `./tpm_server &`. For
-example:
+You can then start the TPM simulator as follows:
 
-    [root@tpm2-simulator src]# ./tpm_server
+    [root@tpm2-simulator ~]# ./tpm_server
     TPM command server listening on port 2321
     Platform server listening on port 2322
 
 You can now start the resource manager daemon as follows:
 
-    [root@tpm2-simulator src]# tpm2-abrmd -t socket
+    [root@tpm2-simulator src]# tpm2-abrmd --tcti=libtss2-tcti-mssim.so --allow-root
     Client accepted
 
 If you prefer to use systemd to manage the resource manager , just amend
@@ -66,13 +65,33 @@ the file `/usr/lib/systemd/system/tpm2-abrmd.service` as follows::
     EnvironmentFile=-/etc/default/tpm2-abrmd
     BusName=com.intel.tss2.Tabrmd
     StandardOutput=syslog
-    ExecStart=/usr/sbin/tpm2-abrmd -t socket
+    ExecStart=/usr/sbin/tpm2-abrmd --tcti=libtss2-tcti-mssim.so --allow-root
     User=tss
 
     [Install]
     WantedBy=multi-user.target
 
-Namely add `-t socker` to the `ExecStart` line.
+Namely add `--tcti=libtss2-tcti-mssim.so --allow-root` to the `ExecStart` line.
+
+TPM2 Software Branches
+======================
+
+You can set branch names that will be used for building within the following
+vars set within `roles/tpm2-simulator/vars/main.yml`
+
+    tpm2_tss_version: 2.1.0
+    tpm2_abrmd_version: 2.0.2
+    tpm2_tools_version: v1.1.0
+
+Configure Arguments
+===================
+
+Configure arguments can be set within `roles/tpm2-simulator/vars/main.yml`, for
+example:
+
+  tpm2_tss_configure_args: "./configure --prefix=/usr --enable-debug --with-crypto=ossl --disable-doxygen-doc"
+  tpm2_abrmd_configure_args: "TSS2_SYS_CFLAGS=' ' TSS2_SYS_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr --with-dbuspolicydir=/etc/dbus-1/system.d"
+  tpm2_tools_configure_args: "SAPI_CFLAGS=' ' SAPI_LIBS='-ltss2-sys -L/usr/lib/' ./configure --prefix=/usr"
 
 Basic Commands
 ==============

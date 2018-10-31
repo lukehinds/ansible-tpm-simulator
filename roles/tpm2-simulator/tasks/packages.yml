@@ -10,27 +10,62 @@
     name: openssl-devel
     state: latest
 
-#- name: install tpm2-tools
-  #become: yes
-  #package:
-    #name: tpm2-tools
-    #state: latest
-
-#- name: install tpm2-abrmd
-  #become: yes
-  #package:
-    #name: tpm2-abrmd
-    #state: latest
-
-#- name: install tpm2-tss
-  #become: yes
-  #package:
-    #name: tpm2-tss
-    #state: latest
-
-- name: install tboot
+- name: install libcmocka-devel
   become: yes
   package:
-    name: tboot
+    name: libcmocka-devel
     state: latest
 
+- name: install libgcrypt-devel
+  become: yes
+  package:
+    name: libgcrypt-devel
+    state: latest
+
+- name: install uthash-devel
+  become: yes
+  package:
+    name: uthash-devel
+    state: latest
+
+- name: install autoconf-archive
+  become: yes
+  package:
+    name: autoconf-archive
+    state: latest
+
+- name: install libtool
+  become: yes
+  package:
+    name: libtool
+    state: latest
+
+- name: install pkgconfig
+  become: yes
+  package:
+    name: pkgconfig
+    state: latest
+
+- name: install dbus-devel
+  become: yes
+  package:
+    name: dbus-devel
+    state: latest
+
+- name: install glib2-devel
+  become: yes
+  package:
+    name: glib2-devel
+    state: latest
+
+- name: install m4
+  become: yes
+  package:
+    name: m4
+    state: latest
+
+- name: install libcurl-devel
+  become: yes
+  package:
+    name: libcurl-devel
+    state: latest

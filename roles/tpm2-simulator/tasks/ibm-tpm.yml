@@ -14,3 +14,12 @@
   make:
     chdir: /root/ibmtpm974/src
 
+- name: Move tpm_server
+  become: yes
+  file:
+    src: /root/ibmtpm974/src/tpm_server
+    path: /usr/local/bin/tpm_server
+    owner: root
+    group: root
+    state: link
+    force: yes
